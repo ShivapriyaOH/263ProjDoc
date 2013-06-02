@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Introduction to NodeJS &mdash; CS263_Project .0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="CS263_Project .0 documentation" href="index.html" />
+    <link rel="prev" title="A Node.js cookbook" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="A Node.js cookbook"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">CS263_Project .0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="introduction-to-nodejs">
+<h1>Introduction to NodeJS<a class="headerlink" href="#introduction-to-nodejs" title="Permalink to this headline">¶</a></h1>
+<p>Node.js is a platform built on Chrome&#8217;s JavaScript runtime for easily building fast, scalable network applications. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient, perfect for data-intensive real-time applications that run across distributed devices.</p>
+<div class="section" id="installation-of-node-js">
+<h2>Installation of Node.js<a class="headerlink" href="#installation-of-node-js" title="Permalink to this headline">¶</a></h2>
+<p>Naturally, we need to install Node before we can write and execute an app. Installation is straight forward, if you use Windows or OS X; the nodejs.org website offers installers for those operating systems. For Linux, use any package manager. Open up your terminal and type</p>
+<div class="highlight-python"><pre>sudo apt-get update
+sudo apt-get install node</pre>
+</div>
+</div>
+<div class="section" id="installing-new-modules">
+<h2>Installing New Modules<a class="headerlink" href="#installing-new-modules" title="Permalink to this headline">¶</a></h2>
+<p>Node.js has a package manager, called Node Package Manager (NPM). It is automatically installed with Node.js, and you use NPM to install new modules. To install a module, open your terminal/command line, navigate to the desired folder, and execute the following command</p>
+<div class="highlight-python"><pre>npm install module_name</pre>
+</div>
+<p>It doesn’t matter what OS you have; the above command will install the module you specify in place of module_name.</p>
+</div>
+<div class="section" id="getting-started-with-node">
+<h2>Getting started with Node<a class="headerlink" href="#getting-started-with-node" title="Permalink to this headline">¶</a></h2>
+<p>Our first Node.js script will print the text &#8216;Hello World!&#8217; to the console. Create a file, called hello.js, and type the following code</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="s">&#39;Hello World!&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Now let’s execute the script. Open the terminal/command line, navigate to the folder that contains hello.js, and execute the following command</p>
+<p>node hello.js</p>
+<p>You should see &#8216;Hello World!&#8217; displayed in the console.</p>
+</div>
+<div class="section" id="creating-a-http-server">
+<h2>Creating a HTTP Server<a class="headerlink" href="#creating-a-http-server" title="Permalink to this headline">¶</a></h2>
+<p>An example of a web server written with Node which responds with &#8216;Hello HTTP&#8217;</p>
+<div class="highlight-python"><pre>&lt;%
+  // Include http module.
+  var http = require("http");
+
+  // Create the server. Function passed as parameter is called on every request made.
+  // request variable holds all request parameters
+  // response variable allows you to do anything with response sent to the client.
+  http.createServer(function (request, response) {
+    // Attach listener on end event.
+    // This event is called when client sent all data and is waiting for response.
+     request.on("end", function () {
+      // Write headers to the response.
+      // 200 is HTTP status code (this one means success)
+      // Second parameter holds header fields in object
+      // We are sending plain text, so Content-Type should be text/plain
+      response.writeHead(200, {
+         'Content-Type': 'text/plain'
+      });
+      // Send data and end response.
+     response.end('Hello HTTP!');
+  });
+// Listen on the 8080 port.
+}).listen(8080);
+%&gt;</pre>
+</div>
+<p>You can send more data to the client by using the response.write() method, but you have to call it before calling response.end(). Save this code as http.js and type this into your console</p>
+<div class="highlight-python"><pre>&gt;node http.js</pre>
+</div>
+<p>Open up your browser and navigate to <a class="reference external" href="http://localhost:8080">http://localhost:8080</a>. You should see the text “Hello HTTP!” in the page.</p>
+<p>All of the examples in the documentation can be run similarly.</p>
+</div>
+</div>
+<div class="section" id="a-few-apis-provided-by-node-js">
+<h1>A few APIs provided by Node.js :<a class="headerlink" href="#a-few-apis-provided-by-node-js" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li><a class="reference external" href="http://nodejs.org/api/child_process.html">Child Process</a></li>
+</ol>
+<p>The set of APIs under this class help in spawning and managing a child process in an application.</p>
+<ol class="arabic simple" start="2">
+<li><a class="reference external" href="http://nodejs.org/api/cluster.html">Cluster</a></li>
+</ol>
+<p>A single instance of Node runs in a single thread. To take advantage of multi-core systems the user will sometimes want to launch a cluster of Node processes to handle the load.</p>
+<p>The cluster module allows you to easily create a network of processes that all share server ports.</p>
+<ol class="arabic simple" start="3">
+<li><a class="reference external" href="http://nodejs.org/api/http.html">HTTP</a></li>
+</ol>
+<p>To use the HTTP server and client one must require(&#8216;http&#8217;).</p>
+<p>The HTTP interfaces in Node are designed to support many features of the protocol which have been traditionally difficult to use. In particular, large, possibly chunk-encoded, messages.</p>
+<ol class="arabic simple" start="4">
+<li><a class="reference external" href="http://nodejs.org/api/net.html">Net</a></li>
+</ol>
+<p>The net module provides you with an asynchronous network wrapper. It contains methods for creating both servers and clients (called streams). You can include this module with :: require(&#8216;net&#8217;);</p>
+<ol class="arabic simple" start="5">
+<li><a class="reference external" href="http://nodejs.org/api/process.html">Process</a></li>
+</ol>
+<p>The process module is used to invoke methods on the EventEmitter instance.</p>
+<ol class="arabic simple" start="6">
+<li><a class="reference external" href="http://nodejs.org/api/stream.html">Stream</a></li>
+</ol>
+<p>A stream is an abstract interface implemented by various objects in Node. For example a request to an HTTP server is a stream, as is stdout. Streams are readable, writable, or both. All streams are instances of EventEmitter</p>
+<p>You can load the Stream base classes by doing require(&#8216;stream&#8217;). There are base classes provided for Readable streams, Writable streams, Duplex streams, and Transform streams.</p>
+<ol class="arabic simple" start="7">
+<li><a class="reference external" href="http://nodejs.org/api/url.html">URL</a></li>
+</ol>
+<p>This module has utilities for URL resolution and parsing. Call require(&#8216;url&#8217;) to use it.</p>
+<ol class="arabic simple" start="8">
+<li><a class="reference external" href="http://nodejs.org/api/util.html">Util</a></li>
+</ol>
+<p>These functions are in the module &#8216;util&#8217;. Use require(&#8216;util&#8217;) to access them.</p>
+</div>
+<div class="section" id="creation-of-a-scalable-realtime-sms-voting-application-using-nodejs">
+<h1>Creation of a Scalable Realtime SMS voting application using NodeJS<a class="headerlink" href="#creation-of-a-scalable-realtime-sms-voting-application-using-nodejs" title="Permalink to this headline">¶</a></h1>
+<p>In this post , we take you through the creation of a scalable realtime SMS voting application using NodeJS along with other technologies .
+Prerequisites:</p>
+<ol class="arabic simple">
+<li>Install NOdeJS and NPM as mentioned above</li>
+<li>Install Express which aims to provide small, robust tooling for HTTP servers. This can be done using the following command</li>
+</ol>
+<blockquote>
+<div>sudo npm install express -g express -H app-dir cd app-dir/ npm install</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Sign-up for a Nodejitsu account where we can deploy our Node app</li>
+</ol>
+<img alt="_images/nodejitsu.png" src="_images/nodejitsu.png" />
+<ol class="arabic simple" start="4">
+<li>Install Jitsu, the command-line tool for Nodejitsu</li>
+</ol>
+<blockquote>
+<div><cite>https://github.com/nodejitsu/jitsu</cite></div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Deploy the app</li>
+</ol>
+<blockquote>
+<div>jitsu deploy</div></blockquote>
+<p>You will be asked to enter a subdomain for your application and the version of Node.js to use. The defaults should work fine, so feel free to hit enter. Once your deployment has finished, check to see that it’s running:</p>
+<blockquote>
+<div><cite>http://your-subdomain.jit.su</cite></div></blockquote>
+<p>6. Set-up CouchDB
+Setting-up a local CouchDB is easy, but for the purposes of this tutorial we show you how to use Cloudant’s hosted CouchDB</p>
+<img alt="_images/cloudantsetup.png" src="_images/cloudantsetup.png" />
+<p>7. To set-up a phone number to process incoming votes over SMS ,sign-up for a Twilio account <a href="#id1"><span class="problematic" id="id2">`here https://www.twilio.com/try-twilio`_</span></a>
+Go to your dashboard and configure your number.If you click on “Dashboard”, you’ll see your Account SID and Auth Token. The Auth Token is initially hidden, but just click on the key to reveal it.</p>
+<img alt="_images/twilio.png" src="_images/twilio.png" />
+<p>8. In order to use Highcharts,download and include the JS library:
+&lt;script src=&#8221;<a class="reference external" href="http://www.twilio.com/blog/javascripts/highcharts.js">http://www.twilio.com/blog/javascripts/highcharts.js</a>&#8220;&gt;&lt;/script&gt;</p>
+<p>All the code can be obtained from the gthub in the following link <a class="reference external" href="https://github.com/ShivapriyaOH/node263.git">https://github.com/ShivapriyaOH/node263.git</a></p>
+<p>The following steps will walk you through the creation of the application:</p>
+<ol class="arabic simple">
+<li>Create a database called “events”</li>
+</ol>
+<img alt="_images/cloudantdbcreate.png" src="_images/cloudantdbcreate.png" />
+<ol class="arabic simple" start="2">
+<li>Create a new document</li>
+</ol>
+<img alt="_images/cloudantdbdoc.png" src="_images/cloudantdbdoc.png" />
+<ol class="arabic simple" start="3">
+<li>Populate the document with some test data</li>
+</ol>
+<blockquote>
+<div>Load a dummy event document into our database so we can get on with building our app.</div></blockquote>
+<img alt="_images/sample_data.png" src="_images/sample_data.png" />
+<ol class="arabic simple" start="4">
+<li>Edit the event on Cloudant to reflect your Twilio phone number</li>
+</ol>
+<img alt="_images/phonesetup.png" src="_images/phonesetup.png" />
+<ol class="arabic simple" start="5">
+<li>Create a view to query events.</li>
+</ol>
+<p>A view is a map function that processes all of the documents in your database and created a hash of key/value pairs. These functions are stored inside of special documents called Design Documents.
+Create a design document and paste in the content below.</p>
+<img alt="_images/designdoc.png" src="_images/designdoc.png" />
+<ol class="arabic" start="6">
+<li><p class="first">Look into config.js from the github.We set the app to point at your CouchDB instance on Cloundant, you will need to provide the following four values ::
+config.couchdb.url: ‘<a class="reference external" href="https://your-username.cloudant.com">https://your-username.cloudant.com</a>’
+config.couchdb.port: 443
+config.couchdb.username: ‘your username’
+config.couchdb.password: ‘your password’</p>
+</li>
+<li><p class="first">In package.json we add all the dependencies, which looks like this</p>
+<div class="highlight-python"><pre>{</pre>
+</div>
+<blockquote>
+<div><p>&#8220;name&#8221;: &#8220;node263-votr-part1&#8221;,
+&#8220;version&#8221;: &#8220;0.0.1-51&#8221;,
+&#8220;private&#8221;: true,
+&#8220;scripts&#8221;: {</p>
+<blockquote>
+<div><p>&#8220;start&#8221;: &#8220;app.js&#8221;</p>
+</div></blockquote>
+<p>},
+&#8220;dependencies&#8221;: {</p>
+<blockquote>
+<div><p>&#8220;express&#8221;: &#8220;3.2.4&#8221;,
+&#8220;hjs&#8221;: &#8220;*&#8221;,
+&#8220;cradle&#8221;: &#8220;0.6.3&#8221;,
+&#8220;twiliosig&#8221;: &#8220;0.0.1&#8221;,
+&#8220;socket.io&#8221;: &#8220;0.9.11&#8221;,
+&#8220;underscore&#8221;: &#8220;1.4.x&#8221;,
+&#8220;nano&#8221;: &#8220;3.3.x&#8221;,
+&#8220;twilio&#8221;: &#8220;1.1.x&#8221;</p>
+</div></blockquote>
+<p>},
+&#8220;subdomain&#8221;: &#8220;node263-votr-part1&#8221;,
+&#8220;engines&#8221;: {</p>
+<blockquote>
+<div><p>&#8220;node&#8221;: &#8220;0.8.x&#8221;</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>}</p>
+</li>
+</ol>
+<p>8. Create events.js where we define the three methods:
+findBy – looks up an event based on a key
+hasVoted – checks to see if a person has already voted for a specific event
+saveVote – saves a person’s vote</p>
+<p><a class="reference external" href="https://github.com/ShivapriyaOH/node263/blob/master/events.js">https://github.com/ShivapriyaOH/node263/blob/master/events.js</a></p>
+<ol class="arabic simple" start="9">
+<li>In routes/index.js has a function called &#8216;voteSMS&#8217; to handle the incoming requests from Twilio is defined. Each time Twilio receives an SMS, this function will be called.</li>
+</ol>
+<p><a class="reference external" href="https://github.com/ShivapriyaOH/node263/blob/master/routes/index.js">https://github.com/ShivapriyaOH/node263/blob/master/routes/index.js</a></p>
+<p>Add a route to our Express application to accept POST requests for the path “/vote/sms” and wire it to the voteSMS function we just created.</p>
+<ol class="arabic simple" start="10">
+<li>Node.js app and edit config.js</li>
+</ol>
+<p>If you click on “Dashboard”, you’ll see your Account SID and Auth Token. The Auth Token is initially hidden, but just click on the key to reveal it.</p>
+<ol class="arabic simple" start="11">
+<li>Using Highcharts to display graph :</li>
+</ol>
+<p>We have a variable &#8216;voting&#8217; that contains the current state of this event. All we have to do is iterate through this data and build a couple of arrays for Highcharts to use to define the series</p>
+<div class="highlight-python"><pre>var chartdata = [],
+labels = [];
+voting.forEach(function(vo, i) {
+  // the number of votes
+  chartdata.push(vo.votes);
+  // the label for this data point
+  labels.push(vo.name+' - '+(i+1));
+});</pre>
+</div>
+<p>Once we have the chartdata and labels arrays initialized, we simply pass these arrays to Highcharts during the initialization</p>
+<div class="highlight-python"><pre>xAxis: {
+  categories: labels
+}
+series: [{name: 'Votes', data: chartdata}]</pre>
+</div>
+<ol class="arabic simple" start="12">
+<li>To do add some real-time display and animate the graph as live votes come in over SMS we use socket.io. Adding socket.io to our Node.js app is done in the following manner :</li>
+</ol>
+<blockquote>
+<div>a.Edit package.json and add “socket.io”: “0.9.11″ to our dependencies
+b.npm install</div></blockquote>
+<p>The following code snippet shows the use of socketio</p>
+<div class="highlight-python"><pre>socketio = require('socket.io')
+// Attach socket.io to our web server
+io = socketio.listen(server);
+io.configure('development', function(){
+io.set('log level', 1);
+});
+io.sockets.on('connection', function(socket) {
+  socket.on('event', function(event) {
+   socket.join(event);
+  });
+});</pre>
+</div>
+<p>The code can be obtained from <a class="reference external" href="https://github.com/ShivapriyaOH/node263/blob/master/app.js">https://github.com/ShivapriyaOH/node263/blob/master/app.js</a></p>
+<p>13. Include the JS library on the client :
+&lt;script src=&#8221;<a class="reference external" href="http://www.twilio.com/blog/socket.io/socket.io.js">http://www.twilio.com/blog/socket.io/socket.io.js</a>&#8220;&gt;&lt;/script&gt;</p>
+<p>We need to open up a socket and once the connection is established, send the event message to the server</p>
+<div class="highlight-python"><pre>var socket = io.connect();
+socket.on('connect', function() {
+  console.log("Connected, lets sign-up for updates about votes for this event");
+  socket.emit('event', '{{ shortname }}');
+});</pre>
+</div>
+<ol class="arabic simple" start="14">
+<li>We need to use socket.io to tell the browser when new votes come in</li>
+</ol>
+<blockquote>
+<div><dl class="docutils">
+<dt>socket.on(&#8216;vote&#8217;,function(data) {</dt>
+<dd>vote = parseInt(data);
+index = vote - 1;
+votes = chart.series[0].data[index].y;
+chart.series[0].data[index].update(votes+1);</dd>
+</dl>
+<p>});</p>
+</div></blockquote>
+<p>This code accepts the incoming vote, parses the string to create an int, calculates an array index and then does a simple increment of the vote count.</p>
+<ol class="arabic simple" start="15">
+<li>In order to obtain a scalable application , we are going to use separate documents for the children in CouchDB as &#8220;events&#8221; and &#8220;votes&#8221;.</li>
+<li>The map functions have to deal with both event and vote documents to create key/value pairs. Here’s what the map function looks like in the event/all view</li>
+</ol>
+<blockquote>
+<div><dl class="docutils">
+<dt>function(doc) {</dt>
+<dd><dl class="first docutils">
+<dt>if(doc.type==&#8217;event&#8217;) {</dt>
+<dd>emit([doc._id],doc);</dd>
+</dl>
+<p>}
+if(doc.type==&#8217;vote&#8217;) {</p>
+<blockquote>
+<div>emit([doc.event_id,doc.vote, doc._id],doc);</div></blockquote>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>A reduce function processes all of the results from map and returns the final output.
+We can use reduce to collapse the table above and get the total number of votes for each option by using the built-in _count function</p>
+<div class="highlight-python"><pre>"all": {
+ "map": "...",
+ "reduce": "_count"
+}</pre>
+</div>
+<p>17. Getting the Vote Count per Voteoption
+When someone hits the event page (<a class="reference external" href="http://domain/events/Java">http://domain/events/Java</a>) we need to fetch information about the event and the number of votes for each voting option. Using map/reduce as described above, this is a simple and fast query to CouchDB</p>
+<div class="highlight-python"><pre>voteCounts = exports.voteCounts = function(event, callback) {
+  db.view('event', 'all', {startkey: [event._id], endkey: [event._id, {}, {}], group_level: 2}, function(err, body) {
+    if (err) {
+      callback(err);
+    }
+    else {
+      // populate count for voteoptions
+      event.voteoptions.forEach(function(vo, i){
+        var found = _und.find(body.rows, function(x) {return x.key[1] == vo.id});
+        vo['votes'] = (found? found.value : 0);
+      });
+      callback();
+    }
+  });
+}</pre>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Introduction to NodeJS</a><ul>
+<li><a class="reference internal" href="#installation-of-node-js">Installation of Node.js</a></li>
+<li><a class="reference internal" href="#installing-new-modules">Installing New Modules</a></li>
+<li><a class="reference internal" href="#getting-started-with-node">Getting started with Node</a></li>
+<li><a class="reference internal" href="#creating-a-http-server">Creating a HTTP Server</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-few-apis-provided-by-node-js">A few APIs provided by Node.js :</a></li>
+<li><a class="reference internal" href="#creation-of-a-scalable-realtime-sms-voting-application-using-nodejs">Creation of a Scalable Realtime SMS voting application using NodeJS</a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">A Node.js cookbook</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/nodejs_cookbook.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="A Node.js cookbook"
+             >previous</a> |</li>
+        <li><a href="index.html">CS263_Project .0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Shivapriya Hiremath and Stephanie Smith.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2b1.
+    </div>
+  </body>
+</html>
