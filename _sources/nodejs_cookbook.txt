@@ -30,7 +30,8 @@ Our first Node.js script will print the text 'Hello World!' to the console. Crea
 
 Now let’s execute the script. Open the terminal/command line, navigate to the folder that contains hello.js, and execute the following command ::
 
-node hello.js
+   node hello.js
+
 
 You should see 'Hello World!' displayed in the console.
 
@@ -71,10 +72,10 @@ You can send more data to the client by using the response.write() method, but y
 
 Open up your browser and navigate to http://localhost:8080. You should see the text “Hello HTTP!” in the page.
 
-All of the examples in the documentation can be run similarly.
+
 
 A few APIs provided by Node.js :
-===========================
+=================================
 
 1. `Child Process <http://nodejs.org/api/child_process.html>`_ 
 
@@ -117,7 +118,7 @@ These functions are in the module 'util'. Use require('util') to access them.
 
 
 Creation of a Scalable Realtime SMS voting application using NodeJS 
-===================================================================
+=====================================================================
 
 In this post , we take you through the creation of a scalable realtime SMS voting application using NodeJS along with other technologies .
 Prerequisites:
@@ -145,7 +146,7 @@ You will be asked to enter a subdomain for your application and the version of N
 6. Set-up CouchDB 
 Setting-up a local CouchDB is easy, but for the purposes of this tutorial we show you how to use Cloudant’s hosted CouchDB
 
-.. image:: _static/cloudantsetup.png
+.. image:: _static/cloudant.png
 
 7. To set-up a phone number to process incoming votes over SMS ,sign-up for a Twilio account `here https://www.twilio.com/try-twilio`_
 Go to your dashboard and configure your number.If you click on “Dashboard”, you’ll see your Account SID and Auth Token. The Auth Token is initially hidden, but just click on the key to reveal it.
@@ -184,13 +185,20 @@ Create a design document and paste in the content below.
 
 .. image:: _static/designdoc.png
 
-6.  Look into config.js from the github.We set the app to point at your CouchDB instance on Cloundant, you will need to provide the following four values ::
+6.  Look into config.js from the github.We set the app to point at your CouchDB instance on Cloundant, you will need to provide the following four values :
+
+::
+
     config.couchdb.url: ‘https://your-username.cloudant.com’
     config.couchdb.port: 443
     config.couchdb.username: ‘your username’
     config.couchdb.password: ‘your password’
-  
-7. In package.json we add all the dependencies, which looks like this ::
+
+::  
+
+7. In package.json we add all the dependencies, which looks like this: 
+
+::
 
    { 
      "name": "node263-votr-part1",
@@ -215,6 +223,7 @@ Create a design document and paste in the content below.
      }
    }
 
+::
 
 8. Create events.js where we define the three methods:
 findBy – looks up an event based on a key
@@ -286,7 +295,9 @@ We need to open up a socket and once the connection is established, send the eve
     socket.emit('event', '{{ shortname }}');
   });
 
-14. We need to use socket.io to tell the browser when new votes come in ::
+14. We need to use socket.io to tell the browser when new votes come in :
+
+::
 
   socket.on('vote',function(data) {
     vote = parseInt(data);
@@ -295,12 +306,16 @@ We need to open up a socket and once the connection is established, send the eve
     chart.series[0].data[index].update(votes+1);
   });
 
+::
+
 This code accepts the incoming vote, parses the string to create an int, calculates an array index and then does a simple increment of the vote count.  
 
 
 15. In order to obtain a scalable application , we are going to use separate documents for the children in CouchDB as "events" and "votes".
 
-16. The map functions have to deal with both event and vote documents to create key/value pairs. Here’s what the map function looks like in the event/all view ::
+16. The map functions have to deal with both event and vote documents to create key/value pairs. Here’s what the map function looks like in the event/all view :
+
+::
 
   function(doc) {
     if(doc.type=='event') {
@@ -311,6 +326,8 @@ This code accepts the incoming vote, parses the string to create an int, calcula
     }
   }
 
+::
+
 A reduce function processes all of the results from map and returns the final output.
 We can use reduce to collapse the table above and get the total number of votes for each option by using the built-in _count function ::
 
@@ -320,6 +337,7 @@ We can use reduce to collapse the table above and get the total number of votes 
   }
 
 17. Getting the Vote Count per Voteoption
+
 When someone hits the event page (http://domain/events/Java) we need to fetch information about the event and the number of votes for each voting option. Using map/reduce as described above, this is a simple and fast query to CouchDB ::
 
   voteCounts = exports.voteCounts = function(event, callback) {
@@ -338,5 +356,15 @@ When someone hits the event page (http://domain/events/Java) we need to fetch in
     });
   }
 
+Now deploy the application ::
 
+  jitsu deploy
+
+Once you deploy you should get a confirmation of successfull deployment :
+
+.. image:: _static/jitsudeploy.png
+
+Assuming you’ve already set-up an event in your database, you can navigate to http://domain.com/events/event-short-name and you should see something like this: 
+
+.. image:: _static/appoutput.png
 
